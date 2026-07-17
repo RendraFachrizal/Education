@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import AdminPage from '../../components/ui/AdminPage';
 import Button from '../../components/common/Button';
+import FileUpload from '../../components/common/FileUpload';
+import ImagePreview from '../../components/common/ImagePreview';
 import { useNotification } from '../../hooks/useNotification';
 import api from '../../services/api';
 
@@ -59,6 +61,24 @@ export default function SettingsPage() {
         <div className="form-row">
           <div className="form-group"><label>Jam Operasional</label><input value={settings.operating_hours} onChange={e => handleChange('operating_hours', e.target.value)} /></div>
           <div className="form-group"><label>About Us (Singkat)</label><input value={settings.about_us} onChange={e => handleChange('about_us', e.target.value)} /></div>
+        </div>
+
+        <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: '1.5rem 0 1rem' }}>Logo & Favicon</h3>
+        <div style={{ display: 'flex', gap: '2rem', marginBottom: '1rem' }}>
+          <div className="form-group">
+            <label>Logo</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              {settings.logo_url && <ImagePreview src={settings.logo_url} onRemove={() => handleChange('logo_url', '')} size={80} />}
+              <FileUpload onUpload={(res) => res && handleChange('logo_url', res.url)} module="general" label="Upload Logo" />
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Favicon</label>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              {settings.favicon_url && <ImagePreview src={settings.favicon_url} onRemove={() => handleChange('favicon_url', '')} size={48} />}
+              <FileUpload onUpload={(res) => res && handleChange('favicon_url', res.url)} module="general" label="Upload Favicon" />
+            </div>
+          </div>
         </div>
 
         <h3 style={{ fontSize: '1rem', fontWeight: 600, margin: '1.5rem 0 1rem' }}>Visi & Misi</h3>

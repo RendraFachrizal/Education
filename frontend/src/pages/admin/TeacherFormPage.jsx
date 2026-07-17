@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPage from '../../components/ui/AdminPage';
 import Button from '../../components/common/Button';
+import FileUpload from '../../components/common/FileUpload';
+import ImagePreview from '../../components/common/ImagePreview';
 import { teacherService } from '../../services/teacherService';
 import { useNotification } from '../../hooks/useNotification';
 
@@ -10,14 +12,14 @@ export default function TeacherFormPage() {
   const isEdit = !!id;
   const navigate = useNavigate();
   const { addNotification } = useNotification();
-  const [form, setForm] = useState({ name: '', nip: '', subject: '', position: '', education: '', gender: 'L', status: 'active', phone: '', email: '' });
+  const [form, setForm] = useState({ name: '', nip: '', subject: '', position: '', education: '', gender: 'L', status: 'active', phone: '', email: '', photo_url: '' });
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
 
   useEffect(() => {
     if (isEdit) {
       teacherService.getById(id).then(({ data }) => {
-        setForm({ name: data.name || '', nip: data.nip || '', subject: data.subject || '', position: data.position || '', education: data.education || '', gender: data.gender || 'L', status: data.status || 'active', phone: data.phone || '', email: data.email || '' });
+        setForm({ name: data.name || '', nip: data.nip || '', subject: data.subject || '', position: data.position || '', education: data.education || '', gender: data.gender || 'L', status: data.status || 'active', phone: data.phone || '', email: data.email || '', photo_url: data.photo_url || '' });
       }).catch(() => addNotification('Gagal memuat data', 'error'))
       .finally(() => setFetching(false));
     }
@@ -64,6 +66,13 @@ export default function TeacherFormPage() {
             <select name="status" value={form.status} onChange={handleChange}>
               <option value="active">Aktif</option><option value="inactive">Tidak Aktif</option>
             </select>
+          </div>
+        </div>
+        <div className="form-group" style={{ marginBottom: '1rem' }}>
+          <label>Foto</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {form.photo_url && <ImagePreview src={form.photo_url} onRemove={() => setForm({...form, photo_url: ''})} size={100} />}
+            <FileUpload onUpload={(res) => res && setForm({...form, photo_url: res.url})} module="photos" label="Upload Foto" />
           </div>
         </div>
         <div className="form-actions">

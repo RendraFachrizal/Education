@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import AdminPage from '../../components/ui/AdminPage';
 import Button from '../../components/common/Button';
+import FileUpload from '../../components/common/FileUpload';
+import ImagePreview from '../../components/common/ImagePreview';
 import { newsService } from '../../services/newsService';
 import { useNotification } from '../../hooks/useNotification';
 import api from '../../services/api';
@@ -14,7 +16,7 @@ export default function NewsFormPage() {
 
   const [form, setForm] = useState({
     title: '', content: '', category_id: '', author: '', status: 'draft',
-    meta_title: '', meta_description: '', meta_keywords: ''
+    thumbnail: '', meta_title: '', meta_description: '', meta_keywords: ''
   });
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -28,8 +30,8 @@ export default function NewsFormPage() {
         setForm({
           title: data.title || '', content: data.content || '', category_id: data.category_id || '',
           author: data.author || '', status: data.status || 'draft',
-          meta_title: data.meta_title || '', meta_description: data.meta_description || '',
-          meta_keywords: data.meta_keywords || ''
+          thumbnail: data.thumbnail || '', meta_title: data.meta_title || '',
+          meta_description: data.meta_description || '', meta_keywords: data.meta_keywords || ''
         });
       }).catch(() => addNotification('Gagal memuat data berita', 'error'))
       .finally(() => setFetching(false));
@@ -113,6 +115,14 @@ export default function NewsFormPage() {
           <label>Konten *</label>
           <textarea name="content" rows={12} value={form.content} onChange={handleChange} placeholder="Tulis konten berita di sini..." />
           {errors.content && <span className="form-error">{errors.content}</span>}
+        </div>
+
+        <div className="form-group">
+          <label>Thumbnail</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {form.thumbnail && <ImagePreview src={form.thumbnail} onRemove={() => setForm({...form, thumbnail: ''})} size={120} />}
+            <FileUpload onUpload={(res) => res && setForm({...form, thumbnail: res.url})} module="thumbnails" label="Upload Thumbnail" />
+          </div>
         </div>
 
         <div className="form-section">

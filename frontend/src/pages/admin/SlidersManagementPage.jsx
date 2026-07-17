@@ -4,6 +4,8 @@ import DataTable from '../../components/ui/DataTable';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import Modal from '../../components/common/Modal';
 import Button from '../../components/common/Button';
+import FileUpload from '../../components/common/FileUpload';
+import ImagePreview from '../../components/common/ImagePreview';
 import { useNotification } from '../../hooks/useNotification';
 import api from '../../services/api';
 
@@ -16,7 +18,7 @@ export default function SlidersManagementPage() {
   const [deleting, setDeleting] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
-  const [form, setForm] = useState({ title: '', subtitle: '', button_text: '', button_url: '', sort_order: 0, status: 'active' });
+  const [form, setForm] = useState({ title: '', subtitle: '', button_text: '', button_url: '', image_url: '', sort_order: 0, status: 'active' });
   const [saving, setSaving] = useState(false);
 
   const fetchData = useCallback(async () => {
@@ -30,8 +32,8 @@ export default function SlidersManagementPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const openAdd = () => { setEditTarget(null); setForm({ title: '', subtitle: '', button_text: '', button_url: '', sort_order: 0, status: 'active' }); setModalOpen(true); };
-  const openEdit = (row) => { setEditTarget(row); setForm({ title: row.title, subtitle: row.subtitle, button_text: row.button_text, button_url: row.button_url, sort_order: row.sort_order, status: row.status }); setModalOpen(true); };
+  const openAdd = () => { setEditTarget(null); setForm({ title: '', subtitle: '', button_text: '', button_url: '', image_url: '', sort_order: 0, status: 'active' }); setModalOpen(true); };
+  const openEdit = (row) => { setEditTarget(row); setForm({ title: row.title, subtitle: row.subtitle, button_text: row.button_text, button_url: row.button_url, image_url: row.image_url || '', sort_order: row.sort_order, status: row.status }); setModalOpen(true); };
 
   const handleSave = async () => {
     setSaving(true);
@@ -75,6 +77,12 @@ export default function SlidersManagementPage() {
         <div className="form-row">
           <div className="form-group"><label>Teks Tombol</label><input value={form.button_text} onChange={(e) => setForm({...form, button_text: e.target.value})} /></div>
           <div className="form-group"><label>URL Tombol</label><input value={form.button_url} onChange={(e) => setForm({...form, button_url: e.target.value})} /></div>
+        </div>
+        <div className="form-group"><label>Gambar</label>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            {form.image_url && <ImagePreview src={form.image_url} onRemove={() => setForm({...form, image_url: ''})} size={100} />}
+            <FileUpload onUpload={(res) => res && setForm({...form, image_url: res.url})} module="sliders" label="Upload Gambar" />
+          </div>
         </div>
         <div className="form-row">
           <div className="form-group"><label>Urutan</label><input type="number" value={form.sort_order} onChange={(e) => setForm({...form, sort_order: parseInt(e.target.value) || 0})} /></div>

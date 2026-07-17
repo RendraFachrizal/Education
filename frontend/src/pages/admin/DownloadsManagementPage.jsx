@@ -4,6 +4,7 @@ import DataTable from '../../components/ui/DataTable';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import Modal from '../../components/common/Modal';
 import Button from '../../components/common/Button';
+import FileUpload from '../../components/common/FileUpload';
 import { useNotification } from '../../hooks/useNotification';
 import api from '../../services/api';
 
@@ -76,7 +77,10 @@ export default function DownloadsManagementPage() {
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editTarget ? 'Edit Download' : 'Tambah Download'} width="500px">
         <div className="form-group"><label>Judul</label><input value={form.title} onChange={(e) => setForm({...form, title: e.target.value})} /></div>
         <div className="form-group"><label>Deskripsi</label><textarea rows={2} value={form.description} onChange={(e) => setForm({...form, description: e.target.value})} /></div>
-        <div className="form-group"><label>URL File</label><input value={form.file_url} onChange={(e) => setForm({...form, file_url: e.target.value})} /></div>
+        <div className="form-group"><label>File</label>
+          <FileUpload onUpload={(res) => res && setForm({...form, file_url: res.url})} module="downloads" accept="*" label="Upload File" />
+          {form.file_url && <span style={{ fontSize: '0.75rem', color: '#0E9F6E', marginTop: '0.25rem' }}>File: {form.file_url}</span>}
+        </div>
         <div className="form-row">
           <div className="form-group"><label>Tipe</label><select value={form.type} onChange={(e) => setForm({...form, type: e.target.value})}>
             <option value="document">Dokumen</option><option value="form">Formulir</option><option value="brochure">Brosur</option><option value="other">Lainnya</option>
