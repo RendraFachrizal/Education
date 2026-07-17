@@ -7,6 +7,20 @@ import LoginPage from './pages/admin/LoginPage';
 import DashboardPage from './pages/admin/DashboardPage';
 import HomePage from './pages/public/HomePage';
 import NotFoundPage from './pages/public/NotFoundPage';
+import ProfilePage from './pages/public/ProfilePage';
+import NewsListPage from './pages/public/NewsListPage';
+import NewsDetailPage from './pages/public/NewsDetailPage';
+import TeachersPage from './pages/public/TeachersPage';
+import StaffPage from './pages/public/StaffPage';
+import AnnouncementsPage from './pages/public/AnnouncementsPage';
+import EventsPage from './pages/public/EventsPage';
+import AchievementsPage from './pages/public/AchievementsPage';
+import GalleriesPage from './pages/public/GalleriesPage';
+import VideosPage from './pages/public/VideosPage';
+import DownloadsPage from './pages/public/DownloadsPage';
+import FAQsPage from './pages/public/FAQsPage';
+import ContactPage from './pages/public/ContactPage';
+import PPDBPage from './pages/public/PPDBPage';
 import NewsManagementPage from './pages/admin/NewsManagementPage';
 import NewsFormPage from './pages/admin/NewsFormPage';
 import CategoriesManagementPage from './pages/admin/CategoriesManagementPage';
@@ -38,6 +52,20 @@ function App() {
         {/* Public Routes */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="profil" element={<ProfilePage />} />
+          <Route path="berita" element={<NewsListPage />} />
+          <Route path="berita/:slug" element={<NewsDetailPage />} />
+          <Route path="guru" element={<TeachersPage />} />
+          <Route path="staff" element={<StaffPage />} />
+          <Route path="pengumuman" element={<AnnouncementsPage />} />
+          <Route path="events" element={<EventsPage />} />
+          <Route path="prestasi" element={<AchievementsPage />} />
+          <Route path="galeri" element={<GalleriesPage />} />
+          <Route path="video" element={<VideosPage />} />
+          <Route path="download" element={<DownloadsPage />} />
+          <Route path="faq" element={<FAQsPage />} />
+          <Route path="kontak" element={<ContactPage />} />
+          <Route path="ppdb" element={<PPDBPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
 
