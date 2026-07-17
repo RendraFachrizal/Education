@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Uploads (keep folder structure but ignore files)
+backend/uploads/images/*
+backend/uploads/documents/*
+!backend/uploads/images/.gitkeep
+!backend/uploads/documents/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Build
+frontend/dist/
+backend/dist/
+
+# Coverage
+coverage/
+
+# Temporary files
+*.tmp
+*~
