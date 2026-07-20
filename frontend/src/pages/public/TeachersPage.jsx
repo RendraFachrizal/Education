@@ -29,7 +29,7 @@ export default function TeachersPage() {
               {teachers.map(t => (
                 <div key={t.id} className="teacher-card">
                   <div className="teacher-avatar">
-                    <img src={t.photo_url || '/avatar-placeholder.svg'} alt={t.name} />
+                    <img src={t.photo || '/avatar-placeholder.svg'} alt={t.name} />
                   </div>
                   <h3>{t.nuptk ? `${t.name}` : t.name}</h3>
                   <span className="teacher-field">{t.field}</span>

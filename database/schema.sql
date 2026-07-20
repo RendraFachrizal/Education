@@ -139,7 +139,7 @@ CREATE TABLE staffs (
 -- ========================================
 CREATE TABLE student_statistics (
   id INT(11) PRIMARY KEY AUTO_INCREMENT,
-  year YEAR(4) NOT NULL,
+  year YEAR NOT NULL,
   total_students INT(6) NOT NULL DEFAULT 0,
   male_count INT(6) NOT NULL DEFAULT 0,
   female_count INT(6) NOT NULL DEFAULT 0,
@@ -158,9 +158,9 @@ CREATE TABLE achievements (
   id INT(11) PRIMARY KEY AUTO_INCREMENT,
   title VARCHAR(200) NOT NULL,
   category ENUM('akademik','non-akademik') NOT NULL,
-  rank VARCHAR(50) NULL,
+  `rank` VARCHAR(50) NULL,
   level ENUM('sekolah','kecamatan','kota','provinsi','nasional','internasional') NOT NULL,
-  year YEAR(4) NOT NULL,
+  year YEAR NOT NULL,
   photo VARCHAR(255) NULL,
   description TEXT NULL,
   status ENUM('active','inactive') NOT NULL DEFAULT 'active',

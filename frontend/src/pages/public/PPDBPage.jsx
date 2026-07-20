@@ -11,9 +11,9 @@ export default function PPDBPage() {
   const [form, setForm] = useState({
     student_name: '', gender: 'L', place_of_birth: '', date_of_birth: '',
     religion: 'Islam', address: '', previous_school: '',
-    father_name: '', father_education: '', father_occupation: '', father_phone: '',
-    mother_name: '', mother_education: '', mother_occupation: '', mother_phone: '',
-    parent_phone: '', guardian_name: '', guardian_phone: ''
+    father_name: '', father_education: '', father_occupation: '',
+    mother_name: '', mother_education: '', mother_occupation: '',
+    parent_phone: ''
   });
 
   const update = (key, value) => setForm(prev => ({ ...prev, [key]: value }));

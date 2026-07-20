@@ -20,7 +20,7 @@ export default function PublicNavbar() {
     <nav className="public-navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
-          <img src="/favicon.svg" alt="Logo" width={36} height={36} />
+          <img src="/school-svgrepo-com.svg" alt="Logo" width={36} height={36} />
           <span className="navbar-title">SDN Profile</span>
         </Link>
 
@@ -40,7 +40,6 @@ export default function PublicNavbar() {
               {item.label}
             </NavLink>
           ))}
-          <Link to="/ppdb" className="navbar-cta">PPDB</Link>
         </div>
       </div>
 

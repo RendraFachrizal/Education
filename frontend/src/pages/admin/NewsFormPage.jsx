@@ -24,7 +24,10 @@ export default function NewsFormPage() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    api.get('/categories').then(({ data }) => setCategories(data.data || [])).catch(() => {});
+    api.get('/categories').then(({ data }) => {
+      const cats = data.data?.data;
+      setCategories(Array.isArray(cats) ? cats : []);
+    }).catch(() => {});
     if (isEdit) {
       newsService.getById(id).then(({ data }) => {
         setForm({
@@ -52,16 +55,23 @@ export default function NewsFormPage() {
     return Object.keys(errs).length === 0;
   };
 
+  const sanitizeForm = (data) => {
+    const sanitized = { ...data };
+    if (sanitized.category_id === '') sanitized.category_id = null;
+    if (!sanitized.thumbnail) sanitized.thumbnail = null;
+    return sanitized;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
     try {
       if (isEdit) {
-        await newsService.update(id, form);
+        await newsService.update(id, sanitizeForm(form));
         addNotification('Berita berhasil diupdate', 'success');
       } else {
-        await newsService.create(form);
+        await newsService.create(sanitizeForm(form));
         addNotification('Berita berhasil ditambahkan', 'success');
       }
       navigate('/admin/berita');

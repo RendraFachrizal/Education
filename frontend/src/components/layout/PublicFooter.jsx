@@ -8,7 +8,7 @@ export default function PublicFooter() {
         <div className="footer-grid">
           <div className="footer-col">
             <div className="footer-brand">
-              <img src="/favicon.svg" alt="Logo" width={40} height={40} />
+              <img src="/school-svgrepo-com.svg" alt="Logo" width={40} height={40} />
               <h3>SDN Profile</h3>
             </div>
             <p className="footer-desc">

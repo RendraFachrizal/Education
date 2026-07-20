@@ -12,8 +12,6 @@ export const PUBLIC_ROUTES = {
   galleryDetail: '/galeri/:slug',
   events: '/agenda',
   ppdb: '/ppdb',
-  ppdbRegister: '/ppdb/daftar',
-  ppdbCheck: '/ppdb/cek-status',
   contact: '/kontak',
   faq: '/faq',
   downloads: '/download'

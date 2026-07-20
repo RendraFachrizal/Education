@@ -29,7 +29,7 @@ export default function StaffPage() {
               {data.map(s => (
                 <div key={s.id} className="staff-card">
                   <div className="staff-avatar">
-                    <img src={s.photo_url || '/avatar-placeholder.svg'} alt={s.name} />
+                    <img src={s.photo || '/avatar-placeholder.svg'} alt={s.name} />
                   </div>
                   <h3>{s.name}</h3>
                   <span className="staff-position">{s.position}</span>

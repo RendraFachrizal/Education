@@ -45,7 +45,7 @@ export default function LoginPage() {
       <div className="login-container">
         <div className="login-header">
           <div className="login-logo">
-            <img src="/favicon.svg" alt="Logo" width={64} height={64} />
+            <img src="/school-svgrepo-com.svg" alt="Logo" width={64} height={64} />
           </div>
           <h1>Admin Panel</h1>
           <p>SDN Profile - Masuk ke dashboard</p>
@@ -98,11 +98,7 @@ export default function LoginPage() {
           </div>
 
           <button type="submit" className="btn-login" disabled={loading}>
-            {loading ? (
-              <span className="loading-spinner" />
-            ) : (
-              <LogIn size={18} />
-            )}
+            {loading ? <span className="loading-spinner" /> : <LogIn size={18} />}
             {loading ? 'Memproses...' : 'Masuk'}
           </button>
         </form>

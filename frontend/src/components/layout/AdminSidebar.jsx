@@ -39,7 +39,7 @@ export default function AdminSidebar({ collapsed, onToggle }) {
     <aside className={`admin-sidebar ${collapsed ? 'collapsed' : ''}`}>
       <div className="sidebar-header">
         <div className="sidebar-logo">
-          <img src="/favicon.svg" alt="Logo" width={32} height={32} />
+          <img src="/school-svgrepo-com.svg" alt="Logo" width={32} height={32} />
           {!collapsed && <span className="sidebar-title">Admin Panel</span>}
         </div>
         <button className="sidebar-toggle" onClick={onToggle}>

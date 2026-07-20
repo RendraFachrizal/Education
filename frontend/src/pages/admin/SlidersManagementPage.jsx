@@ -18,7 +18,7 @@ export default function SlidersManagementPage() {
   const [deleting, setDeleting] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState(null);
-  const [form, setForm] = useState({ title: '', subtitle: '', button_text: '', button_url: '', image_url: '', sort_order: 0, status: 'active' });
+  const [form, setForm] = useState({ title: '', subtitle: '', button_text: '', button_url: '', image: '', sort_order: 0, status: 'active' });
   const [saving, setSaving] = useState(false);
 
   const fetchData = useCallback(async () => {
@@ -32,8 +32,8 @@ export default function SlidersManagementPage() {
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  const openAdd = () => { setEditTarget(null); setForm({ title: '', subtitle: '', button_text: '', button_url: '', image_url: '', sort_order: 0, status: 'active' }); setModalOpen(true); };
-  const openEdit = (row) => { setEditTarget(row); setForm({ title: row.title, subtitle: row.subtitle, button_text: row.button_text, button_url: row.button_url, image_url: row.image_url || '', sort_order: row.sort_order, status: row.status }); setModalOpen(true); };
+  const openAdd = () => { setEditTarget(null); setForm({ title: '', subtitle: '', button_text: '', button_url: '', image: '', sort_order: 0, status: 'active' }); setModalOpen(true); };
+  const openEdit = (row) => { setEditTarget(row); setForm({ title: row.title, subtitle: row.subtitle, button_text: row.button_text, button_url: row.button_url, image: row.image || '', sort_order: row.sort_order, status: row.status }); setModalOpen(true); };
 
   const handleSave = async () => {
     setSaving(true);
@@ -80,8 +80,8 @@ export default function SlidersManagementPage() {
         </div>
         <div className="form-group"><label>Gambar</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            {form.image_url && <ImagePreview src={form.image_url} onRemove={() => setForm({...form, image_url: ''})} size={100} />}
-            <FileUpload onUpload={(res) => res && setForm({...form, image_url: res.url})} module="sliders" label="Upload Gambar" />
+            {form.image && <ImagePreview src={form.image} onRemove={() => setForm({...form, image: ''})} size={100} />}
+            <FileUpload onUpload={(res) => res && setForm({...form, image: res.url})} module="sliders" label="Upload Gambar" />
           </div>
         </div>
         <div className="form-row">

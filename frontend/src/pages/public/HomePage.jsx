@@ -26,11 +26,11 @@ export default function HomePage() {
 
   useEffect(() => {
     Promise.all([
-      api.get('/sliders').catch(() => ({ data: { data: [] } })),
+      api.get('/sliders').catch(() => ({ data: { data: { data: [] } } })),
       api.get('/news?limit=6').catch(() => ({ data: { data: { data: [] } } })),
       api.get('/achievements?limit=6').catch(() => ({ data: { data: { data: [] } } }))
     ]).then(([s, n, a]) => {
-      setSliders(s.data.data || []);
+      setSliders(s.data.data?.data || []);
       setNews(n.data.data?.data || []);
       setAchievements(a.data.data?.data || []);
     }).finally(() => setLoading(false));

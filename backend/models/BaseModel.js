@@ -48,7 +48,7 @@ class BaseModel {
     const placeholders = keys.map(() => '?').join(', ');
 
     const [result] = await pool.query(
-      `INSERT INTO ${this.tableName} (${keys.join(', ')}) VALUES (${placeholders})`,
+      `INSERT INTO ${this.tableName} (${keys.map(k => `\`${k}\``).join(', ')}) VALUES (${placeholders})`,
       values
     );
 
@@ -59,7 +59,7 @@ class BaseModel {
     const keys = Object.keys(data);
     const values = Object.values(data);
 
-    const setClause = keys.map(key => `${key} = ?`).join(', ');
+    const setClause = keys.map(key => `\`${key}\` = ?`).join(', ');
 
     const [result] = await pool.query(
       `UPDATE ${this.tableName} SET ${setClause} WHERE id = ?`,

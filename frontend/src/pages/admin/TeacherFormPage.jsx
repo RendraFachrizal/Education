@@ -12,14 +12,14 @@ export default function TeacherFormPage() {
   const isEdit = !!id;
   const navigate = useNavigate();
   const { addNotification } = useNotification();
-  const [form, setForm] = useState({ name: '', nip: '', subject: '', position: '', education: '', gender: 'L', status: 'active', phone: '', email: '', photo_url: '' });
+  const [form, setForm] = useState({ name: '', nip: '', subject: '', position: '', education: '', gender: 'L', status: 'active', phone: '', email: '', photo: '' });
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
 
   useEffect(() => {
     if (isEdit) {
       teacherService.getById(id).then(({ data }) => {
-        setForm({ name: data.name || '', nip: data.nip || '', subject: data.subject || '', position: data.position || '', education: data.education || '', gender: data.gender || 'L', status: data.status || 'active', phone: data.phone || '', email: data.email || '', photo_url: data.photo_url || '' });
+        setForm({ name: data.name || '', nip: data.nip || '', subject: data.subject || '', position: data.position || '', education: data.education || '', gender: data.gender || 'L', status: data.status || 'active', phone: data.phone || '', email: data.email || '', photo: data.photo || '' });
       }).catch(() => addNotification('Gagal memuat data', 'error'))
       .finally(() => setFetching(false));
     }
@@ -71,8 +71,8 @@ export default function TeacherFormPage() {
         <div className="form-group" style={{ marginBottom: '1rem' }}>
           <label>Foto</label>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            {form.photo_url && <ImagePreview src={form.photo_url} onRemove={() => setForm({...form, photo_url: ''})} size={100} />}
-            <FileUpload onUpload={(res) => res && setForm({...form, photo_url: res.url})} module="photos" label="Upload Foto" />
+            {form.photo && <ImagePreview src={form.photo} onRemove={() => setForm({...form, photo: ''})} size={100} />}
+            <FileUpload onUpload={(res) => res && setForm({...form, photo: res.url})} module="photos" label="Upload Foto" />
           </div>
         </div>
         <div className="form-actions">
