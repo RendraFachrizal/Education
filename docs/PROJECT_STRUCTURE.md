@@ -31,23 +31,20 @@
 
 ```text
 school-profile/
-├── backend/                    # Backend Express.js
+├── backend/                    # Backend Express.js + database + deploy
 ├── frontend/                   # Frontend React.js
-├── database/                   # File database (migration, seed, SQL)
 ├── docs/                       # Dokumentasi proyek
 ├── .gitignore                  # File yang diabaikan git
-├── .env.example                # Contoh environment variables
-├── README.md                   # Dokumentasi utama proyek
-└── LICENSE                     # Lisensi proyek
+├── .prettierrc                 # Prettier code formatter
+└── README.md                   # Dokumentasi utama proyek
 ```
 
 ### 1.1 Penjelasan Folder Utama
 
 | Folder | Fungsi |
 |--------|--------|
-| `backend/` | Aplikasi backend menggunakan Express.js - REST API, autentikasi, upload file |
+| `backend/` | Aplikasi backend menggunakan Express.js - REST API, autentikasi, upload file, database SQL, dan konfigurasi deployment |
 | `frontend/` | Aplikasi frontend menggunakan React.js - UI publik dan admin panel |
-| `database/` | Berisi file migration database, seeder, dan file SQL mentah |
 | `docs/` | Dokumentasi lengkap proyek (PRD, System Design, Database, UI/UX, Roadmap) |
 
 ---
@@ -177,7 +174,18 @@ backend/
 ├── config/
 │   ├── database.js                # Koneksi MySQL (mysql2)
 │   ├── env.js                     # Load environment variables
-│   └── app.js                     # Konfigurasi aplikasi
+│   └── logger.js                  # Winston logger config
+│
+├── database/
+│   ├── schema.sql                 # Full database schema
+│   ├── seed.sql                   # Full seed data
+│   ├── drop.sql                   # DROP ALL TABLES
+│   ├── migrations/                # SQL migration files
+│   └── seeds/                     # SQL seed files
+│
+├── deploy/
+│   ├── deploy.sh                  # Deployment script
+│   └── nginx.conf                 # Nginx production config
 │
 ├── uploads/
 │   ├── images/
@@ -632,7 +640,7 @@ frontend/
 ## 4. Struktur Database
 
 ```text
-database/
+backend/database/
 ├── migrations/
 │   ├── 001_create_roles_table.sql
 │   ├── 002_create_users_table.sql

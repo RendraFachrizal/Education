@@ -57,7 +57,7 @@ async function migrate() {
         password: process.env.DB_PASSWORD,
         multipleStatements: true
     });
-    const sql = fs.readFileSync(path.join(__dirname, '..', 'database', 'schema.sql'), 'utf8');
+    const sql = fs.readFileSync(path.join(__dirname, 'database', 'schema.sql'), 'utf8');
     await conn.query('CREATE DATABASE IF NOT EXISTS \`' + process.env.DB_NAME + '\`');
     await conn.query('USE \`' + process.env.DB_NAME + '\`');
     await conn.query(sql);
