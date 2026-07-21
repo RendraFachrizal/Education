@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Image } from 'lucide-react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
 import Lightbox from '../../components/ui/Lightbox';
 
@@ -61,7 +61,7 @@ export default function GalleriesPage() {
                 <div className="photo-grid">
                   {photos.map((p, i) => (
                     <div key={p.id} className="photo-item" onClick={() => setLightboxIndex(i)}>
-                      <img src={p.url} alt={p.caption || ''} />
+                      <img src={getFullUrl(p.image)} alt={p.caption || ''} />
                     </div>
                   ))}
                   {photos.length === 0 && <p style={{ color: '#6B7280' }}>Belum ada foto di album ini.</p>}
@@ -72,7 +72,7 @@ export default function GalleriesPage() {
         </div>
       </section>
 
-      <Lightbox images={photos.map(p => ({ src: p.url, caption: p.caption }))} index={lightboxIndex} onClose={() => setLightboxIndex(-1)} />
+      <Lightbox images={photos.map(p => ({ src: getFullUrl(p.image), caption: p.caption }))} index={lightboxIndex} onClose={() => setLightboxIndex(-1)} />
 
       <style>{`
         .public-page { min-height: 60vh; }

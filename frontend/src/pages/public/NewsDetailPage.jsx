@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, User } from 'lucide-react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
 
 export default function NewsDetailPage() {
@@ -34,7 +34,7 @@ export default function NewsDetailPage() {
           <h1>{item.title}</h1>
           <div className="news-meta">
             <span><Calendar size={14} /> {new Date(item.published_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-            <span><User size={14} /> {item.author_name || 'Admin'}</span>
+            <span><User size={14} /> {item.author}</span>
           </div>
         </div>
       </div>
@@ -42,7 +42,7 @@ export default function NewsDetailPage() {
       <section className="section">
         <div className="container" style={{ maxWidth: 800 }}>
           {item.thumbnail && (
-            <img src={item.thumbnail} alt={item.title} className="detail-thumb" />
+            <img src={getFullUrl(item.thumbnail)} alt={item.title} className="detail-thumb" />
           )}
           <div className="detail-content" dangerouslySetInnerHTML={{ __html: item.content }} />
         </div>

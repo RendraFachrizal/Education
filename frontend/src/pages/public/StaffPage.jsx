@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
 
 export default function StaffPage() {
@@ -7,7 +7,7 @@ export default function StaffPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/staff?limit=50')
+    api.get('/staffs?limit=50')
       .then(({ data: res }) => setData(res.data.data || []))
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -29,7 +29,7 @@ export default function StaffPage() {
               {data.map(s => (
                 <div key={s.id} className="staff-card">
                   <div className="staff-avatar">
-                    <img src={s.photo || '/avatar-placeholder.svg'} alt={s.name} />
+                    <img src={getFullUrl(s.photo) || '/avatar-placeholder.svg'} alt={s.name} />
                   </div>
                   <h3>{s.name}</h3>
                   <span className="staff-position">{s.position}</span>

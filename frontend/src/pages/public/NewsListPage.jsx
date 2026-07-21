@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
+
+function getExcerpt(html, max = 120) {
+  if (!html) return '';
+  const text = html.replace(/<[^>]*>/g, '');
+  return text.length > max ? text.substring(0, max) + '...' : text;
+}
 
 export default function NewsListPage() {
   const [data, setData] = useState([]);
@@ -18,7 +24,7 @@ export default function NewsListPage() {
       }).catch(() => {}).finally(() => setLoading(false));
   }, [page]);
 
-  const totalPages = pagination ? Math.ceil(pagination.total / pagination.per_page) : 1;
+  const totalPages = pagination ? pagination.totalPages : 1;
 
   return (
     <div className="public-page">
@@ -37,13 +43,13 @@ export default function NewsListPage() {
                 {data.map(item => (
                   <Link key={item.id} to={`/berita/${item.slug}`} className="news-card">
                     <div className="news-thumb">
-                      <img src={item.thumbnail || '/placeholder.svg'} alt={item.title} />
+                      <img src={getFullUrl(item.thumbnail) || '/placeholder.svg'} alt={item.title} />
                     </div>
                     <div className="news-body">
                       <span className="news-category">{item.category_name}</span>
                       <span className="news-date">{new Date(item.published_at).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                       <h3>{item.title}</h3>
-                      <p>{item.excerpt}</p>
+                      <p>{getExcerpt(item.content)}</p>
                     </div>
                   </Link>
                 ))}

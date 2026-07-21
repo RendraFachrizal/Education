@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
 
 export default function TeachersPage() {
@@ -29,11 +29,11 @@ export default function TeachersPage() {
               {teachers.map(t => (
                 <div key={t.id} className="teacher-card">
                   <div className="teacher-avatar">
-                    <img src={t.photo || '/avatar-placeholder.svg'} alt={t.name} />
+                    <img src={getFullUrl(t.photo) || '/avatar-placeholder.svg'} alt={t.name} />
                   </div>
-                  <h3>{t.nuptk ? `${t.name}` : t.name}</h3>
-                  <span className="teacher-field">{t.field}</span>
-                  {t.nuptk && <span className="teacher-nuptk">NUPTK: {t.nuptk}</span>}
+                  <h3>{t.name}</h3>
+                  <span className="teacher-field">{t.subject}</span>
+                  {t.nip && <span className="teacher-nuptk">NIP: {t.nip}</span>}
                 </div>
               ))}
               {teachers.length === 0 && <p style={{ textAlign: 'center', color: '#6B7280' }}>Belum ada data guru.</p>}

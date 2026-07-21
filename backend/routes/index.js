@@ -28,6 +28,7 @@ router.use('/users', require('./userRoutes'));
 router.use('/settings', require('./settingRoutes'));
 router.use('/dashboard', require('./dashboardRoutes'));
 router.use('/logs', require('./logRoutes'));
+router.use('/student-statistics', require('./studentStatisticRoutes'));
 router.use('/upload', require('./uploadRoutes'));
 
 module.exports = router;

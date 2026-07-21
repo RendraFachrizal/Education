@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight, School, Users, Trophy, Building2, ArrowRight } from 'lucide-react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Slider from '../../components/ui/Slider';
 import Card from '../../components/common/Card';
 import Loading from '../../components/common/Loading';
@@ -18,21 +18,44 @@ function StatCard({ icon: Icon, value, label, color }) {
   );
 }
 
+function getExcerpt(html, max = 120) {
+  if (!html) return '';
+  const text = html.replace(/<[^>]*>/g, '');
+  return text.length > max ? text.substring(0, max) + '...' : text;
+}
+
 export default function HomePage() {
   const [sliders, setSliders] = useState([]);
   const [news, setNews] = useState([]);
   const [achievements, setAchievements] = useState([]);
+  const [stats, setStats] = useState({ students: 0, teachers: 0, achievements: 0, facilities: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       api.get('/sliders').catch(() => ({ data: { data: { data: [] } } })),
       api.get('/news?limit=6').catch(() => ({ data: { data: { data: [] } } })),
-      api.get('/achievements?limit=6').catch(() => ({ data: { data: { data: [] } } }))
-    ]).then(([s, n, a]) => {
+      api.get('/achievements?limit=6').catch(() => ({ data: { data: { data: [] } } })),
+      api.get('/student-statistics?limit=1').catch(() => ({ data: { data: [] } })),
+      api.get('/teachers?limit=1').catch(() => ({ data: { data: { data: [], pagination: { total: 0 } } } })),
+      api.get('/facilities?limit=1').catch(() => ({ data: { data: { data: [], pagination: { total: 0 } } } }))
+    ]).then(([s, n, a, ss, t, f]) => {
       setSliders(s.data.data?.data || []);
       setNews(n.data.data?.data || []);
       setAchievements(a.data.data?.data || []);
+
+      const studentData = ss.data.data?.[0] || {};
+      const achData = a.data.data?.pagination || { total: 0 };
+      const teachData = t.data.data?.pagination || { total: 0 };
+      const facilityData = f.data.data?.pagination || { total: 0 };
+
+      setStats({
+        students: studentData.total_students || 0,
+        total_class: studentData.total_class || 0,
+        teachers: teachData.total || 0,
+        achievements: achData.total || 0,
+        facilities: facilityData.total || 0
+      });
     }).finally(() => setLoading(false));
   }, []);
 
@@ -46,10 +69,10 @@ export default function HomePage() {
       <section className="section stats-section">
         <div className="container">
           <div className="stats-grid">
-            <StatCard icon={School} value="500+" label="Siswa" color="#1A56DB" />
-            <StatCard icon={Users} value="30+" label="Guru" color="#0E9F6E" />
-            <StatCard icon={Trophy} value="100+" label="Prestasi" color="#F59E0B" />
-            <StatCard icon={Building2} value="15+" label="Fasilitas" color="#E02424" />
+            <StatCard icon={School} value={stats.students} label="Siswa" color="#1A56DB" />
+            <StatCard icon={Users} value={stats.teachers} label="Guru" color="#0E9F6E" />
+            <StatCard icon={Trophy} value={stats.achievements} label="Prestasi" color="#F59E0B" />
+            <StatCard icon={Building2} value={stats.facilities} label="Fasilitas" color="#E02424" />
           </div>
         </div>
       </section>
@@ -66,12 +89,12 @@ export default function HomePage() {
               {news.map((item) => (
                 <Link key={item.id} to={`/berita/${item.slug}`} className="news-card">
                   <div className="news-thumb">
-                    <img src={item.thumbnail || '/placeholder.svg'} alt={item.title} />
+                    <img src={getFullUrl(item.thumbnail) || '/placeholder.svg'} alt={item.title} />
                   </div>
                   <div className="news-body">
                     <span className="news-date">{new Date(item.published_at).toLocaleDateString('id-ID')}</span>
                     <h3>{item.title}</h3>
-                    <p>{item.excerpt}</p>
+                    <p>{getExcerpt(item.content)}</p>
                   </div>
                 </Link>
               ))}

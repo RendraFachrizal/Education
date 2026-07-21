@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FileText, Download } from 'lucide-react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
 
 export default function DownloadsPage() {
@@ -15,7 +15,7 @@ export default function DownloadsPage() {
   }, []);
 
   const grouped = data.reduce((acc, item) => {
-    const type = item.type || 'other';
+    const type = item.category || 'other';
     if (!acc[type]) acc[type] = [];
     acc[type].push(item);
     return acc;
@@ -41,7 +41,7 @@ export default function DownloadsPage() {
                   <h3>{typeLabels[type] || type}</h3>
                   <div className="download-list">
                     {items.map(item => (
-                      <a key={item.id} href={item.file_url} target="_blank" rel="noopener noreferrer" className="download-item">
+                      <a key={item.id} href={getFullUrl(item.file)} target="_blank" rel="noopener noreferrer" className="download-item">
                         <FileText size={20} />
                         <div className="download-info">
                           <span className="download-title">{item.title}</span>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Play } from 'lucide-react';
-import api from '../../services/api';
+import api, { getFullUrl } from '../../services/api';
 import Loading from '../../components/common/Loading';
 
 export default function VideosPage() {
@@ -57,7 +57,7 @@ export default function VideosPage() {
                   <div key={v.id} className={`video-item ${active?.id === v.id ? 'active' : ''}`} onClick={() => setActive(v)}>
                     <div className="video-thumb">
                       <Play size={20} />
-                      {v.thumbnail_url && <img src={v.thumbnail_url} alt="" />}
+                      {v.thumbnail && <img src={getFullUrl(v.thumbnail)} alt="" />}
                     </div>
                     <div className="video-info">
                       <span className="video-item-title">{v.title}</span>

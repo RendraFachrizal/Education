@@ -1,7 +1,24 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock } from 'lucide-react';
+import api from '../../services/api';
 
 export default function PublicFooter() {
+  const [s, setS] = useState({});
+
+  useEffect(() => {
+    api.get('/settings').then(({ data }) => {
+      const items = data.data || data || {};
+      if (Array.isArray(items)) {
+        const map = {};
+        items.forEach(item => { map[item.key] = item.value; });
+        setS(map);
+      } else {
+        setS(items);
+      }
+    }).catch(() => {});
+  }, []);
+
   return (
     <footer className="public-footer">
       <div className="footer-container">
@@ -9,10 +26,10 @@ export default function PublicFooter() {
           <div className="footer-col">
             <div className="footer-brand">
               <img src="/school-svgrepo-com.svg" alt="Logo" width={40} height={40} />
-              <h3>SDN Profile</h3>
+              <h3>{s.school_name || 'SDN Profile'}</h3>
             </div>
             <p className="footer-desc">
-              Sekolah Dasar unggulan yang mencetak generasi berprestasi dan berakhlak mulia.
+              {s.about_us || 'Sekolah Dasar unggulan yang mencetak generasi berprestasi dan berakhlak mulia.'}
             </p>
           </div>
 
@@ -30,16 +47,16 @@ export default function PublicFooter() {
           <div className="footer-col">
             <h4>Kontak</h4>
             <ul className="footer-contact">
-              <li><MapPin size={16} /> Jl. Pendidikan No. 1, Jakarta</li>
-              <li><Phone size={16} /> (021) 1234-5678</li>
-              <li><Mail size={16} /> info@sdprofile.sch.id</li>
-              <li><Clock size={16} /> Senin - Jumat, 07:00 - 16:00</li>
+              <li><MapPin size={16} /> {s.address || 'Jl. Pendidikan No. 1, Jakarta'}</li>
+              <li><Phone size={16} /> {s.phone || '(021) 1234-5678'}</li>
+              <li><Mail size={16} /> {s.email || 'info@sdprofile.sch.id'}</li>
+              <li><Clock size={16} /> {s.operating_hours || 'Senin - Jumat, 07:00 - 16:00'}</li>
             </ul>
           </div>
         </div>
 
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} SDN Profile. Hak Cipta Dilindungi.</p>
+          <p>&copy; {new Date().getFullYear()} {s.school_name || 'SDN Profile'}. Hak Cipta Dilindungi.</p>
         </div>
       </div>
 
