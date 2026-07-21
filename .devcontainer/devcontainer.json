@@ -1,27 +1,6 @@
 {
   "name": "School Profile Website",
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/devcontainers/features/mysql:1": {
-      "version": "8.0"
-    }
-  },
-  "forwardPorts": [5000, 5173, 3306],
-  "portsAttributes": {
-    "5000": {
-      "label": "Backend API",
-      "onAutoForward": "notify"
-    },
-    "5173": {
-      "label": "Frontend Vite",
-      "onAutoForward": "openBrowser"
-    },
-    "3306": {
-      "label": "MySQL",
-      "onAutoForward": "silent"
-    }
-  },
-  "postCreateCommand": "bash .devcontainer/post-create.sh",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
   "customizations": {
     "vscode": {
       "extensions": [

@@ -37,24 +37,7 @@ school-profile/
 - MySQL 8+
 - npm
 
-### GitHub Codespace (Auto Setup)
-
-Proyek ini sudah dilengkapi konfigurasi **devcontainer** untuk GitHub Codespace:
-
-1. Klik tombol **"Code" > "Open with Codespaces"** di repository GitHub
-2. Tunggu hingga container selesai dibangun (~1-2 menit)
-3. Semua dependensi, database, dan environment akan ter-setup otomatis
-4. Jalankan kedua server:
-
-```bash
-# Terminal 1: Backend
-cd backend && npm run dev
-
-# Terminal 2: Frontend
-cd frontend && npm run dev
-```
-
-### Setup Manual (Local)
+### Setup Manual
 
 #### Backend
 
