@@ -24,9 +24,8 @@ Website profil sekolah dasar modern, responsif, dan mudah dikelola. Dibangun den
 
 ```
 school-profile/
-├── backend/        # Express.js REST API
+├── backend/        # Express.js REST API + database + deploy
 ├── frontend/       # React.js application
-├── database/       # Migration & seed files
 └── docs/           # Documentation
 ```
 
@@ -38,7 +37,26 @@ school-profile/
 - MySQL 8+
 - npm
 
-### Backend
+### GitHub Codespace (Auto Setup)
+
+Proyek ini sudah dilengkapi konfigurasi **devcontainer** untuk GitHub Codespace:
+
+1. Klik tombol **"Code" > "Open with Codespaces"** di repository GitHub
+2. Tunggu hingga container selesai dibangun (~1-2 menit)
+3. Semua dependensi, database, dan environment akan ter-setup otomatis
+4. Jalankan kedua server:
+
+```bash
+# Terminal 1: Backend
+cd backend && npm run dev
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
+```
+
+### Setup Manual (Local)
+
+#### Backend
 
 ```bash
 cd backend
@@ -48,7 +66,7 @@ npm install
 npm run dev
 ```
 
-### Frontend
+#### Frontend
 
 ```bash
 cd frontend
@@ -57,14 +75,14 @@ npm install
 npm run dev
 ```
 
-### Database
+#### Database
 
 ```bash
 # Import schema
-mysql -u root -p school_profile < database/schema.sql
+mysql -u root -p school_profile < backend/database/schema.sql
 
 # Import seed data
-mysql -u root -p school_profile < database/seed.sql
+mysql -u root -p school_profile < backend/database/seed.sql
 ```
 
 ## Dokumentasi Lengkap
