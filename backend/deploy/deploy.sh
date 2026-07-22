@@ -16,7 +16,7 @@ echo "Branch: $BRANCH"
 echo "Time: $(date)"
 
 # 1. Backup existing data
-echo "[1/8] Backing up current version..."
+echo "[1/10] Backing up current version..."
 mkdir -p "$BACKUP_DIR"
 if [ -d "$BACKEND_DIR" ]; then
     cp -r "$BACKEND_DIR/.env" "$BACKUP_DIR/.env.backup" 2>/dev/null || true
@@ -24,26 +24,26 @@ if [ -d "$BACKEND_DIR" ]; then
 fi
 
 # 2. Pull latest code
-echo "[2/8] Pulling latest code..."
+echo "[2/10] Pulling latest code..."
 cd "$APP_DIR"
 git fetch origin
 git checkout "$BRANCH"
 git pull origin "$BRANCH"
 
 # 3. Install backend dependencies
-echo "[3/8] Installing backend dependencies..."
+echo "[3/10] Installing backend dependencies..."
 cd "$BACKEND_DIR"
 npm ci --production
 
 # 4. Restore environment
-echo "[4/8] Restoring environment..."
+echo "[4/10] Restoring environment..."
 if [ -f "$BACKUP_DIR/.env.backup" ]; then
     cp "$BACKUP_DIR/.env.backup" "$BACKEND_DIR/.env"
     echo "  Restored .env from backup"
 fi
 
 # 5. Run database migration
-echo "[5/8] Running database migration..."
+echo "[5/10] Running database migration..."
 node -e "
 const mysql = require('mysql2/promise');
 const fs = require('fs');
@@ -68,19 +68,31 @@ migrate().catch(console.error);
 "
 
 # 6. Build frontend
-echo "[6/8] Building frontend..."
+echo "[6/10] Building frontend..."
 cd "$FRONTEND_DIR"
 npm ci
 npm run build
 
-# 7. Restart application
-echo "[7/8] Restarting application..."
+# 7. Set frontend permissions for Nginx
+echo "[7/10] Setting frontend permissions for Nginx..."
+sudo chown -R www-data:www-data "$FRONTEND_DIR/dist"
+sudo chmod -R 755 "$FRONTEND_DIR/dist"
+
+# 8. Configure Nginx
+echo "[8/10] Configuring Nginx..."
+sudo cp "$BACKEND_DIR/deploy/nginx.conf" /etc/nginx/sites-available/school-profile
+sudo ln -sf /etc/nginx/sites-available/school-profile /etc/nginx/sites-enabled/
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t && sudo systemctl reload nginx || echo "WARNING: Nginx config test failed"
+
+# 9. Restart application
+echo "[9/10] Restarting application..."
 cd "$BACKEND_DIR"
 pm2 startOrReload ecosystem.config.js --env production
 pm2 save
 
-# 8. Verify deployment
-echo "[8/8] Verifying deployment..."
+# 10. Verify deployment
+echo "[10/10] Verifying deployment..."
 sleep 3
 HEALTH=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/api/health || echo "000")
 if [ "$HEALTH" = "200" ]; then

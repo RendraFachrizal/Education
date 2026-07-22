@@ -1,6 +1,6 @@
 {
   "name": "School Profile Website",
-  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:18",
   "customizations": {
     "vscode": {
       "extensions": [
