@@ -33,6 +33,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Serve frontend build
+const frontendDist = path.join(__dirname, '..', 'frontend', 'dist');
+app.use(express.static(frontendDist));
+
 // API Routes
 app.use('/api', routes);
 
@@ -41,8 +45,19 @@ app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'OK', timestamp: new Date().toISOString() });
 });
 
-// 404 handler
-app.use((req, res) => {
+// SPA fallback - serve index.html for non-API routes
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+    return next();
+  }
+  res.sendFile(path.join(frontendDist, 'index.html'));
+});
+
+// 404 handler for API routes only
+app.use((req, res, next) => {
+  if (!req.path.startsWith('/api')) {
+    return next();
+  }
   res.status(404).json({
     success: false,
     message: 'Endpoint tidak ditemukan'
