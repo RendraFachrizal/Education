@@ -28,7 +28,7 @@ echo "[2/10] Pulling latest code..."
 cd "$APP_DIR"
 git fetch origin
 git checkout "$BRANCH"
-git pull origin "$BRANCH"
+git pull --rebase origin "$BRANCH"
 
 # 3. Install backend dependencies
 echo "[3/10] Installing backend dependencies..."
